@@ -20,5 +20,8 @@ Cargo.lock
 
 
 # no git
-
 nogit
+
+
+# env
+.env

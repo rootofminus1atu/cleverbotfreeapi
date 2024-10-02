@@ -4,8 +4,10 @@ use crate::{cookie_generation::get_cookie, helpers::pythonic_encode};
 use std::str;
 use tracing;
 use parking_lot::RwLock;  // these bastards lied to me, theres no holding-across-an-await-point detection here
+// actually there's the send_guard feature that allows clippy to detect such issues
 
 
+/// # Use CleverbotBuilder to create one of these
 #[derive(Debug, Clone)]
 pub struct Cleverbot {
     pub cookie: Arc<RwLock<String>>,
