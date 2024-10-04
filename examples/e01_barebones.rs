@@ -1,7 +1,7 @@
 use cleverbotfreeapi::CleverbotBuilder;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+async fn main() -> Result<(), cleverbotfreeapi::Error> {
     let c = CleverbotBuilder::default()
         .with_custom_history_size(5)
         .build().await?;

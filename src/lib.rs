@@ -1,7 +1,4 @@
-//! the main doc thing
-//! 
-//! Cleverbot 
-
+#![doc = include_str!("../README.md")]
 
 mod cleverbot;
 mod error;

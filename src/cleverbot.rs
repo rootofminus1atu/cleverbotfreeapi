@@ -7,7 +7,26 @@ use parking_lot::RwLock;  // these bastards lied to me, theres no holding-across
 // actually there's the send_guard feature that allows clippy to detect such issues
 
 
-/// # Use CleverbotBuilder to create one of these
+/// A struct representing a Cleverbot instance.
+///
+/// # Examples
+/// 
+/// Basic usage:
+/// 
+/// ```no_run
+/// let cleverbot = CleverbotBuilder::default().build().await?;
+/// ```
+/// 
+/// Custom usage:
+/// ```no_run
+/// let client = reqwest::Client::new();
+/// let cleverbot = CleverbotBuilder::default()
+///     .with_client(client)
+///     .with_custom_history_size(100)
+///     .with_retries(false)
+///     .build()
+///     .await?;
+/// ```
 #[derive(Debug, Clone)]
 pub struct Cleverbot {
     pub cookie: Arc<RwLock<String>>,
@@ -18,9 +37,18 @@ pub struct Cleverbot {
 
 
 impl Cleverbot {
+    /// Responses like these indicate that something went wrong, most likely the cookie expired.
     const BAD_RESPONSES: &'static [&'static str] = &["Hello from Cleverbot\n", "<html"];
 
-    /// get a response from cleverbot
+    /// Get a response from Cleverbot.
+    ///
+    /// # Examples
+    /// 
+    /// ```no_run
+    /// let response = cleverbot.get_response("are you a bot?").await?;
+    /// println!("response: {}", response);
+    /// // would return something like "no, I'm a human"
+    /// ```
     pub async fn get_response(&self, message: &str) -> Result<String, crate::Error> {
         let payload = self.build_payload(message).await;
 
@@ -41,19 +69,44 @@ impl Cleverbot {
             })
     }
 
-    /// returns the history as a vec of strings
+    /// Returns the conversation history as a `Vec<String>`.
+    ///
+    /// # Examples
+    /// 
+    /// ```no_run
+    /// let history = cleverbot.get_history();
+    /// println!("conversation history: {:?}", history);
+    /// ```
     pub fn get_history(&self) -> Vec<String> {
         (*self.history.read()).iter().cloned().collect::<Vec<_>>()
     }
 
-    /// ok nah i aint making this 💀
+    /// Clears the messaging history.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// cleverbot.clear_history();
+    /// println!("history cleared");
+    /// ```
+    pub fn clear_history(&self) {
+        (*self.history.write()).clear()
+    }
+
+    // ok nah i aint making this 💀
     // pub fn get_history_iter(&self) -> impl Iterator<Item = String> + '_ {
     //     // let history = (*self.history.read()).iter().cloned().collect::<Vec<_>>();
     //     // history.into_iter()
     //     (*self.history.read()).iter().cloned()
     // }
 
-    /// manual reset cookie
+    /// Manually reset the cookie.
+    ///
+    /// # Examples
+    /// 
+    /// ```no_run
+    /// cleverbot.recookie().await?;
+    /// ```
     pub async fn recookie(&self) -> Result<(), crate::Error> {
         let new_cookie = get_cookie(&self.client).await?;
         *self.cookie.write() = new_cookie;
@@ -90,7 +143,7 @@ impl Cleverbot {
 
         let partial_payload = format!("{}{}{}", stimulus_str, context_str, cb_settings_str);
 
-        // i dont know why, i dont wanna know why, but this is just needed at the end (the name speaks for itself)
+        // i dont know why, i dont wanna know why, but this is just needed at the end (the variable name speaks for itself)
         let magic_ingredient = format!("{:x}", md5::compute(&partial_payload[7..33]));
 
         let payload = format!("{}{}", partial_payload, magic_ingredient);
@@ -121,6 +174,26 @@ impl Cleverbot {
     }
 }
 
+/// A builder for creating a Cleverbot client.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```no_run
+/// let cleverbot = CleverbotBuilder::default().build().await?;
+/// ```
+/// 
+/// Custom usage:
+/// ```no_run
+/// let client = reqwest::Client::new();
+/// let cleverbot = CleverbotBuilder::default()
+///     .with_client(client)
+///     .with_custom_history_size(100)
+///     .with_retries(false)
+///     .build()
+///     .await?;
+/// ```
 pub struct CleverbotBuilder {
     client: reqwest::Client,
     with_retries: bool,
@@ -137,25 +210,34 @@ impl Default for CleverbotBuilder {
     }
 }
 
+
+
 impl CleverbotBuilder {
     const DEFAULT_HISTORY_SIZE: usize = 50;
 
+    /// Set a custom reqwest client.
     pub fn with_client(mut self, client: reqwest::Client) -> Self {
         self.client = client;
         self
     }
 
-    /// by default `with_retries` is set to `true`
+    /// Enable or disable retries.
+    ///
+    /// By default, `with_retries` is set to `true`.
     pub fn with_retries(mut self, with_retries: bool) -> Self {
         self.with_retries = with_retries;
         self
     }
 
+    /// Set a custom history size.
+    /// 
+    /// By default it's set to 50. 
     pub fn with_custom_history_size(mut self, history_size: usize) -> Self {
         self.history_size = history_size;
         self
     }
 
+    /// Build the Cleverbot client.
     pub async fn build(self) -> Result<Cleverbot, crate::Error> {
         let cookie = get_cookie(&self.client).await?;
         tracing::debug!("cookie: {cookie}");
