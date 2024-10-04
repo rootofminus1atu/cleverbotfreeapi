@@ -1,6 +1,6 @@
 [package]
 name = "cleverbotfreeapi"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "Interact with a washed down version of the Cleverbot API for free"
