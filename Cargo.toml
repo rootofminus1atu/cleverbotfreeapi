@@ -2,6 +2,8 @@
 name = "cleverbotfreeapi"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+respository = "https://github.com/rootofminus1atu/cleverbotfreeapi"
 
 [dependencies]
 chrono = "0.4.38"

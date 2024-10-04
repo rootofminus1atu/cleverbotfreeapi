@@ -7,7 +7,7 @@ async fn main() -> Result<(), cleverbotfreeapi::Error> {
         .build().await?;
 
     let r = c.get_response("are you a bot").await?;
-    println!("response: {r}");
+    println!("response: {}", r);
 
     Ok(())
 }

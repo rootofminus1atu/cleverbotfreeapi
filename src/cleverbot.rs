@@ -2,7 +2,6 @@ use std::sync::Arc;
 use ringbuffer::{RingBuffer, AllocRingBuffer};
 use crate::{cookie_generation::get_cookie, helpers::pythonic_encode};
 use std::str;
-use tracing;
 use parking_lot::RwLock;  // these bastards lied to me, theres no holding-across-an-await-point detection here
 // actually there's the send_guard feature that allows clippy to detect such issues
 
@@ -136,9 +135,11 @@ impl Cleverbot {
             .iter()
             .rev()
             .enumerate()
-            .map(|(i, text)| format!("&vText{}={}", i + 2, pythonic_encode(text)))
-            .collect::<String>();
-
+            .fold(String::new(), |mut acc, (i, text)| {
+                use std::fmt::Write;
+                write!(acc, "&vText{}={}", i + 2, pythonic_encode(text)).unwrap();
+                acc
+            });
         let cb_settings_str = "&cb_settings_scripting=no&islearning=1&icognoid=wsf&icognocheck=";
 
         let partial_payload = format!("{}{}{}", stimulus_str, context_str, cb_settings_str);

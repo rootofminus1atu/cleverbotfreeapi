@@ -5,11 +5,11 @@ This crate provides easy-to-use interfaces for sending messages to Cleverbot and
 
 ## Features
 
-[x] Get cleverbot responses.
-[x] Maintain conversation history.
-[x] Retry failed requests automatically (configurable).
+- [x] Get cleverbot responses.
+- [x] Maintain conversation history.
+- [x] Retry failed requests automatically (configurable).
 
-### Examples
+### Usage
 
 Here is a basic example of using `cleverbotfreeapi` to send a message to Cleverbot and receive a response:
 
@@ -33,5 +33,6 @@ Contributions are welcome!
 
 ## Potential future features
 
-[ ] Sessions, to automatically manage different conversations happening in different "places". Not sure if this is a good idea, as some people might be happy with im-memory sessions, some might want to use a db, etc. 
+- Sessions, to automatically manage different conversations happening in different "places". Not sure if this is a good idea, as some people might be happy with im-memory sessions, some might want to use a db, etc.
+- Tests
 
