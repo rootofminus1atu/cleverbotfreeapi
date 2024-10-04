@@ -3,6 +3,9 @@ name = "cleverbotfreeapi"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
+description = "Interact with a washed down version of the Cleverbot API for free"
+documentation = "https://docs.rs/cleverbotfreeapi"
+homepage = "https://github.com/rootofminus1atu/cleverbotfreeapi"
 respository = "https://github.com/rootofminus1atu/cleverbotfreeapi"
 
 [dependencies]
