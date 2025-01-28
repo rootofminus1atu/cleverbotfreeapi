@@ -37,7 +37,7 @@ pub struct Cleverbot {
 
 impl Cleverbot {
     /// Responses like these indicate that something went wrong, most likely the cookie expired.
-    const BAD_RESPONSES: &'static [&'static str] = &["Hello from Cleverbot\n", "<html"];
+    const BAD_RESPONSES: &'static [&'static str] = &["Hello from Cleverbot\n", "<html", "<html>"];
 
     /// Get a response from Cleverbot.
     ///
