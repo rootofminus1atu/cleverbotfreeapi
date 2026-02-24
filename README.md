@@ -40,5 +40,5 @@ Contributions are welcome!
 
 - [Documentation](https://docs.rs/cleverbotfreeapi)
 - [Crates.io](https://crates.io/crates/cleverbotfreeapi)
-- [Repository](https://github.com/rootofminus1atu/cleverbotfreeapi)
+- [Repository](https://github.com/rootofminus1/cleverbotfreeapi)
 
