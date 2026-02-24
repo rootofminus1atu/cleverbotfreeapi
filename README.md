@@ -25,7 +25,7 @@ async fn main() -> Result<(), Error> {
 }
 ```
 
-For more detailed examples, see the [examples](https://github.com/rootofminus1atu/cleverbotfreeapi/tree/main/examples) directory in the repository.
+For more detailed examples, see the [examples](https://github.com/rootofminus1/cleverbotfreeapi/tree/main/examples) directory in the repository.
 
 ## Contributing
 
